@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Property | Luxury Villa Rentals</title>
+  <title>Edit Property | Bhada Ma</title>
   <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -217,7 +217,7 @@
     <div class="edit-property-header">
       <div class="container">
         <h1 class="edit-property-title">Edit Property</h1>
-        <p class="edit-property-subtitle">Update your luxury villa listing</p>
+        <p class="edit-property-subtitle">Update your property listing</p>
       </div>
     </div>
 
@@ -228,13 +228,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label for="title">Property Title</label>
-            <input type="text" id="title" name="title" placeholder="e.g., Luxury Beachfront Villa" required>
+            <input type="text" id="title" name="title" placeholder="e.g., 3BHK Apartment" required>
           </div>
           
           <div class="form-group">
             <label for="property_type">Property Type</label>
             <select id="property_type" name="property_type" required>
-              <option value="villa">Luxury Villa</option>
+              <option value="house">House</option>
+              <option value="villa">Villa</option>
+              <option value="apartment">Apartment</option>
               <option value="mansion">Mansion</option>
               <option value="penthouse">Penthouse</option>
               <option value="beach-house">Beach House</option>
@@ -243,13 +245,13 @@
           </div>
           
           <div class="form-group">
-            <label for="price">Monthly Rent (₹)</label>
+            <label for="price">Monthly Rent (Rs.)</label>
             <input type="number" id="price" name="price" placeholder="Enter monthly rent amount" required>
           </div>
           
           <div class="form-group">
             <label for="location">Location</label>
-            <input type="text" id="location" name="location" placeholder="e.g., Mumbai, Maharashtra" required>
+            <input type="text" id="location" name="location" placeholder="e.g., Kathmandu, Lalitpur" required>
           </div>
           
           <div class="form-group">

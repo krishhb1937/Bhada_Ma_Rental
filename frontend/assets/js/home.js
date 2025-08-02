@@ -53,7 +53,7 @@ function createPropertyCard(property) {
         ${imageUrl 
           ? `<img src="${imageUrl}" alt="${property.title}" style="width: 100%; height: 100%; object-fit: cover;">` 
           : `<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); color: #212121; font-size: 1.2rem; font-weight: 500;">
-              ${property.property_type || 'Luxury Villa'}
+              ${property.property_type || 'Bhada Ma'}
             </div>`
         }
       </div>
