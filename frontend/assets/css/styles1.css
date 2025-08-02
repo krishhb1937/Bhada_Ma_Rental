@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+  }
+  
+  form input, form select, form button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+  }
+  
+  button {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0b7dda;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  .card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+  }
+  form input, form select {
+    padding: 8px;
+    margin: 5px;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .card img {
+    margin-top: 10px;
+    max-height: 150px;
+    object-fit: cover;
+  }
+  
+  

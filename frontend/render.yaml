@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: rental-management-frontend
+    env: static
+    plan: free
+    buildCommand: echo "Static site - no build required"
+    startCommand: echo "Static site deployed"
+    staticPublishPath: ./
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html 

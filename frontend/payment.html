@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment | Luxury Villa Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .payment-page-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .payment-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .payment-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .payment-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    
+    .payment-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+      overflow: hidden;
+    }
+    
+    .payment-content {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    
+    .payment-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: #FFD700;
+      font-weight: 700;
+      margin: 2rem 0;
+      text-shadow: 0 2px 4px rgba(33, 33, 33, 0.1);
+    }
+    
+    .qr-code-container {
+      margin: 2rem 0;
+      padding: 2rem;
+      border: 2px dashed #E0C097;
+      border-radius: 16px;
+      background: rgba(224, 192, 151, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .qr-code-container:hover {
+      border-color: #FFD700;
+      background: rgba(255, 215, 0, 0.05);
+    }
+    
+    .qr-code {
+      max-width: 300px;
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(33, 33, 33, 0.1);
+    }
+    
+    .payment-details {
+      margin: 2rem 0;
+      padding: 2rem;
+      background: #FAF3E0;
+      border-radius: 12px;
+      border: 1px solid rgba(224, 192, 151, 0.2);
+    }
+    
+    .payment-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(224, 192, 151, 0.2);
+    }
+    
+    .payment-detail:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .payment-detail .label {
+      font-weight: 600;
+      color: #212121;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .payment-detail .value {
+      color: #212121;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    
+    .payment-instructions {
+      margin: 2rem 0;
+      padding: 2rem;
+      background: rgba(224, 192, 151, 0.1);
+      border-radius: 12px;
+      border-left: 4px solid #FFD700;
+      text-align: left;
+    }
+    
+    .payment-instructions h4 {
+      color: #212121;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .payment-instructions ol {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+    
+    .payment-instructions li {
+      margin: 0.8rem 0;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .payment-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-width: 140px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+    }
+    
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(33, 33, 33, 0.3);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+    }
+    
+    .payment-status {
+      text-align: center;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .status-pending {
+      background: rgba(255, 215, 0, 0.1);
+      color: #856404;
+      border: 2px solid rgba(255, 215, 0, 0.3);
+    }
+    
+    .status-completed {
+      background: rgba(40, 167, 69, 0.1);
+      color: #155724;
+      border: 2px solid rgba(40, 167, 69, 0.3);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #E0C097;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 0.5rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      text-align: center;
+      padding: 2rem;
+      color: #721c24;
+      background: rgba(220, 53, 69, 0.1);
+      border: 2px solid rgba(220, 53, 69, 0.3);
+      border-radius: 12px;
+      margin: 2rem 0;
+      font-weight: 500;
+    }
+    
+    .upi-info {
+      background: rgba(224, 192, 151, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .upi-info strong {
+      color: #212121;
+    }
+    
+    @media (max-width: 768px) {
+      .payment-page-container {
+        padding: 1rem 0;
+      }
+      
+      .payment-header {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+      
+      .payment-container {
+        margin: 0 1rem;
+        border-radius: 12px;
+      }
+      
+      .payment-content {
+        padding: 2rem 1.5rem;
+      }
+      
+      .qr-code {
+        max-width: 250px;
+      }
+      
+      .payment-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .payment-title {
+        font-size: 1.8rem;
+      }
+      
+      .payment-container {
+        margin: 0 0.5rem;
+      }
+      
+      .payment-content {
+        padding: 1.5rem 1rem;
+      }
+      
+      .payment-amount {
+        font-size: 2rem;
+      }
+      
+      .qr-code {
+        max-width: 200px;
+      }
+      
+      .payment-details {
+        padding: 1.5rem;
+      }
+      
+      .payment-instructions {
+        padding: 1.5rem;
+      }
+      
+      .payment-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="payment-page-container">
+    <div class="payment-header">
+      <div class="container">
+        <h1 class="payment-title">Payment</h1>
+        <p class="payment-subtitle">Complete your luxury villa rental payment</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="payment-container">
+        <div class="payment-content">
+          <div id="paymentContent">
+            <div class="loading">Loading payment details...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/payment.js"></script>
+</body>
+</html> 

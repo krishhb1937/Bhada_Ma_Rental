@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Property Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .dashboard-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .dashboard-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .dashboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .dashboard-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    
+    .user-info-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 0 auto 3rem;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.2);
+      text-align: center;
+    }
+    
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem;
+      color: #212121;
+      font-weight: 600;
+    }
+    
+    .user-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #212121;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .user-type {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+    }
+    
+    .dashboard-section {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 20px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+    }
+    
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #212121;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 2rem;
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      border-radius: 2px;
+    }
+    
+    .add-property-btn {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2rem;
+    }
+    
+    .add-property-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+    
+    .logout-btn {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+    }
+    
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(33, 33, 33, 0.3);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+    }
+    
+    .empty-state h4 {
+      color: #212121;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .empty-state p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .empty-state-btn {
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      color: #212121;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .empty-state-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(224, 192, 151, 0.3);
+    }
+    
+    /* Booking Cards */
+    .booking-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 5px 20px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .booking-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.15);
+    }
+    
+    .booking-image {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .booking-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .no-image {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #212121;
+      font-weight: 500;
+    }
+    
+    .booking-content {
+      flex: 1;
+    }
+    
+    .booking-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #212121;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .booking-location {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .booking-price {
+      font-size: 1.2rem;
+      color: #FFD700;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .booking-details {
+      margin-bottom: 1.5rem;
+    }
+    
+    .booking-details p {
+      margin-bottom: 0.5rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .booking-details strong {
+      color: #212121;
+      font-weight: 600;
+    }
+    
+    .booking-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    
+    /* Button Styles */
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+    }
+    
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(33, 33, 33, 0.3);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-chat {
+      background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+      color: white;
+    }
+    
+    .btn-chat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(111, 66, 193, 0.3);
+    }
+    
+    .btn-pay {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+    }
+    
+    .btn-pay:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+    
+    /* Status Badges */
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-pending {
+      background: rgba(255, 193, 7, 0.2);
+      color: #856404;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .status-confirmed {
+      background: rgba(40, 167, 69, 0.2);
+      color: #155724;
+      border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+    
+    .status-rejected {
+      background: rgba(220, 53, 69, 0.2);
+      color: #721c24;
+      border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+    
+    .status-completed {
+      background: rgba(40, 167, 69, 0.2);
+      color: #155724;
+      border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 1rem 0;
+      }
+      
+      .dashboard-header {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+      
+      .dashboard-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .user-info-card {
+        margin: 0 1rem 2rem;
+        padding: 1.5rem;
+      }
+      
+      .booking-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .booking-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .logout-btn {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .dashboard-title {
+        font-size: 1.8rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+      
+      .user-info-card {
+        margin: 0 0.5rem 1.5rem;
+        padding: 1rem;
+      }
+      
+      .dashboard-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .booking-card {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+      }
+      
+      .booking-title {
+        font-size: 1.1rem;
+      }
+      
+      .btn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <div class="container">
+        <h1 class="dashboard-title">Your Dashboard</h1>
+        <p class="dashboard-subtitle">Manage your property rental experience</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="userInfo" class="user-info-card">
+        <div class="user-avatar">👤</div>
+        <div class="user-name">Loading...</div>
+        <div class="user-type">Loading...</div>
+      </div>
+
+      <div id="ownerSection" style="display:none;">
+        <div class="dashboard-section">
+          <h3 class="section-title">Your Listed Properties</h3>
+          <button onclick="location.href='add-property.html'" class="add-property-btn">+ Add New Property</button>
+          <div id="myProperties"></div>
+        </div>
+
+        <div class="dashboard-section">
+          <h3 class="section-title">Incoming Booking Requests</h3>
+          <div id="bookingRequests"></div>
+        </div>
+        
+        <div class="dashboard-section">
+          <h3 class="section-title">Payment History</h3>
+          <div id="ownerPaymentHistory"></div>
+        </div>
+      </div>
+
+      <div id="renterSection" style="display:none;">
+        <div class="dashboard-section">
+          <h3 class="section-title">Your Bookings</h3>
+          <div id="myBookings"></div>
+        </div>
+        
+        <div class="dashboard-section">
+          <h3 class="section-title">Payment History</h3>
+          <div id="paymentHistory"></div>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </div>
+  
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>

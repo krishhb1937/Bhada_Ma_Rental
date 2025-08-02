@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Property | Bhada Ma</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .add-property-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .add-property-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .add-property-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .add-property-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    
+    .add-property-form {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #212121;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: 2px solid #E0C097;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #FAF3E0;
+      color: #212121;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+      background: #FFFFFF;
+    }
+    
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .form-group select {
+      cursor: pointer;
+    }
+    
+    .file-upload {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .file-upload input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+    
+    .file-upload-label {
+      display: block;
+      padding: 1rem 1.5rem;
+      border: 2px dashed #E0C097;
+      border-radius: 10px;
+      background: #FAF3E0;
+      color: #666;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .file-upload-label:hover {
+      border-color: #FFD700;
+      background: rgba(255, 215, 0, 0.1);
+    }
+    
+    .file-upload input[type=file]:focus + .file-upload-label {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+    
+    .back-btn {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(33, 33, 33, 0.3);
+    }
+    
+    .form-tip {
+      background: rgba(224, 192, 151, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .form-tip h4 {
+      color: #212121;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .add-property-container {
+        padding: 1rem 0;
+      }
+      
+      .add-property-header {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+      
+      .add-property-form {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .add-property-title {
+        font-size: 1.8rem;
+      }
+      
+      .add-property-form {
+        padding: 1.5rem 1rem;
+        margin: 0 0.5rem;
+      }
+      
+      .submit-btn,
+      .back-btn {
+        width: 100%;
+      }
+    }
+  </style>
+  <script src="assets/js/utils.js"></script>
+  <script>checkAuth();</script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="add-property-container">
+    <div class="add-property-header">
+      <div class="container">
+        <h1 class="add-property-title">Add New Property</h1>
+        <p class="add-property-subtitle">List your luxury villa and start earning premium rental income</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <form id="addPropertyForm" class="add-property-form" enctype="multipart/form-data">
+        <div class="form-tip">
+          <h4>💡 Tips for a Successful Listing</h4>
+          <p>• Use high-quality photos to showcase your property's best features<br>
+          • Write detailed descriptions highlighting luxury amenities<br>
+          • Set competitive pricing based on market rates<br>
+          • Include all essential property details</p>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="title">Property Title</label>
+            <input type="text" id="title" name="title" placeholder="e.g., Luxury Beachfront Villa" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="property_type">Property Type</label>
+            <select id="property_type" name="property_type" required>
+              <option value="">Select property type</option>
+              <option value="villa">Luxury Villa</option>
+              <option value="mansion">Mansion</option>
+              <option value="penthouse">Penthouse</option>
+              <option value="beach-house">Beach House</option>
+              <option value="apartment">Luxury Apartment</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="price">Monthly Rent (₹)</label>
+            <input type="number" id="price" name="price" placeholder="Enter monthly rent amount" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="e.g., Mumbai, Maharashtra" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="bedrooms">Number of Bedrooms</label>
+            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter number of bedrooms">
+          </div>
+          
+          <div class="form-group">
+            <label for="bathrooms">Number of Bathrooms</label>
+            <input type="number" id="bathrooms" name="bathrooms" placeholder="Enter number of bathrooms">
+          </div>
+        </div>
+        
+        <div class="form-group full-width">
+          <label for="description">Property Description</label>
+          <textarea id="description" name="description" placeholder="Describe your property's features, amenities, and what makes it special..."></textarea>
+        </div>
+        
+        <div class="form-group full-width">
+          <label for="photos">Property Photos</label>
+          <div class="file-upload">
+            <input type="file" id="photos" name="photos" multiple accept="image/*">
+            <label for="photos" class="file-upload-label">
+              📸 Click to upload photos or drag and drop<br>
+              <small>Upload multiple high-quality images (JPG, PNG)</small>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">Add Property</button>
+          <button type="button" onclick="location.href='dashboard.html'" class="back-btn">Back to Dashboard</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/property.js"></script>
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details | Luxury Villa Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .property-detail-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .property-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .property-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .property-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    
+    .property-content {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+    }
+    
+    .property-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #212121;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .property-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .info-item {
+      background: #FAF3E0;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(224, 192, 151, 0.2);
+    }
+    
+    .info-label {
+      font-size: 0.9rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .info-value {
+      font-size: 1.2rem;
+      color: #212121;
+      font-weight: 600;
+    }
+    
+    .property-description {
+      color: #666;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .booking-section {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+    }
+    
+    .booking-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #212121;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .booking-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #212121;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: 2px solid #E0C097;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #FAF3E0;
+      color: #212121;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+      background: #FFFFFF;
+    }
+    
+    .booking-btn {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 1rem;
+    }
+    
+    .booking-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+    
+    .back-btn {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(33, 33, 33, 0.3);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .error {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      color: #c53030;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    @media (max-width: 768px) {
+      .property-detail-container {
+        padding: 1rem 0;
+      }
+      
+      .property-header {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+      
+      .property-content,
+      .booking-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .property-image {
+        height: 300px;
+      }
+      
+      .property-info {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .booking-form {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .property-title {
+        font-size: 1.8rem;
+      }
+      
+      .booking-title {
+        font-size: 1.5rem;
+      }
+      
+      .property-content,
+      .booking-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .property-image {
+        height: 250px;
+      }
+      
+      .booking-btn,
+      .back-btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="property-detail-container">
+    <div class="property-header">
+      <div class="container">
+        <h1 class="property-title">Property Details</h1>
+        <p class="property-subtitle">Discover your perfect luxury villa</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="propertyDetail" class="property-content">
+        <div class="loading">Loading property details...</div>
+      </div>
+
+      <div id="bookingSection" class="booking-section" style="display: none;">
+        <h3 class="booking-title">Book This Property</h3>
+        <form id="bookingForm" class="booking-form">
+          <div class="form-group">
+            <label for="move_in_date">Move-in Date</label>
+            <input type="date" id="move_in_date" name="move_in_date" required>
+          </div>
+          <div class="form-group">
+            <label for="total_amount">Total Rent Amount (₹)</label>
+            <input type="number" id="total_amount" name="total_amount" placeholder="Enter total amount" required>
+          </div>
+        </form>
+        <button type="submit" form="bookingForm" class="booking-btn">Book Now</button>
+        <button type="button" onclick="location.href='dashboard.html'" class="back-btn">Back to Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/property-detail.js"></script>
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversations | Luxury Villa Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .conversations-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .conversations-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 3rem 0;
+      margin-bottom: 3rem;
+    }
+    
+    .conversations-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .conversations-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    
+    .conversation-list {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+      overflow: hidden;
+    }
+    
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(224, 192, 151, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .conversation-item:hover {
+      background: rgba(224, 192, 151, 0.05);
+      transform: translateX(5px);
+    }
+    
+    .conversation-item:last-child {
+      border-bottom: none;
+    }
+    
+    .conversation-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      color: #212121;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .conversation-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .conversation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .conversation-name {
+      font-weight: 600;
+      color: #212121;
+      font-size: 1.1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .conversation-time {
+      font-size: 0.8rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .conversation-preview {
+      color: #666;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+    
+    .conversation-property {
+      font-size: 0.8rem;
+      color: #E0C097;
+      font-weight: 500;
+      background: rgba(224, 192, 151, 0.1);
+      padding: 0.2rem 0.8rem;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    
+    .unread-badge {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 1rem;
+      flex-shrink: 0;
+    }
+    
+    .no-conversations {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #666;
+    }
+    
+    .no-conversations h3 {
+      color: #212121;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+    }
+    
+    .no-conversations p {
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+    
+    .no-conversations-btn {
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      color: #212121;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .no-conversations-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(224, 192, 151, 0.3);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #E0C097;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 0.5rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .conversation-item.unread {
+      background: rgba(255, 215, 0, 0.05);
+      border-left: 4px solid #FFD700;
+    }
+    
+    .conversation-item.unread .conversation-name {
+      font-weight: 700;
+    }
+    
+    @media (max-width: 768px) {
+      .conversations-container {
+        padding: 1rem 0;
+      }
+      
+      .conversations-header {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+      
+      .conversation-list {
+        margin: 0 1rem;
+        border-radius: 12px;
+      }
+      
+      .conversation-item {
+        padding: 1.2rem 1.5rem;
+      }
+      
+      .conversation-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+        margin-right: 1rem;
+      }
+      
+      .conversation-name {
+        font-size: 1rem;
+      }
+      
+      .conversation-preview {
+        font-size: 0.85rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .conversations-title {
+        font-size: 1.8rem;
+      }
+      
+      .conversation-list {
+        margin: 0 0.5rem;
+      }
+      
+      .conversation-item {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .conversation-avatar {
+        margin-right: 0;
+        align-self: center;
+      }
+      
+      .conversation-content {
+        width: 100%;
+      }
+      
+      .conversation-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+      
+      .unread-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        margin-left: 0;
+      }
+      
+      .no-conversations {
+        padding: 3rem 1rem;
+      }
+      
+      .no-conversations h3 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="conversations-container">
+    <div class="conversations-header">
+      <div class="container">
+        <h1 class="conversations-title">Conversations</h1>
+        <p class="conversations-subtitle">Connect with property owners and renters</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="conversation-list">
+        <div id="conversationsContainer">
+          <div class="loading">Loading conversations...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/conversations.js"></script>
+</body>
+</html> 

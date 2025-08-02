@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Luxury Villa Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    
+    .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      box-shadow: 0 25px 50px rgba(33, 33, 33, 0.2);
+      border: 1px solid rgba(224, 192, 151, 0.2);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .auth-header {
+      margin-bottom: 2rem;
+    }
+    
+    .auth-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #212121;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .auth-subtitle {
+      color: #666;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+    
+    .auth-form {
+      text-align: left;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #212121;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: 2px solid #E0C097;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #FAF3E0;
+      color: #212121;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+      background: #FFFFFF;
+    }
+    
+    .form-group select {
+      cursor: pointer;
+    }
+    
+    .auth-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+    
+    .auth-link {
+      color: #E0C097;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .auth-link:hover {
+      color: #FFD700;
+    }
+    
+    .auth-divider {
+      margin: 1.5rem 0;
+      text-align: center;
+      position: relative;
+    }
+    
+    .auth-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(224, 192, 151, 0.3);
+    }
+    
+    .auth-divider span {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .role-info {
+      background: rgba(224, 192, 151, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .role-info h4 {
+      color: #212121;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      .auth-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Join Luxury Villa Rentals</h1>
+        <p class="auth-subtitle">Create your account to start your luxury villa journey</p>
+      </div>
+      
+      <form id="registerForm" class="auth-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="user_type">Account Type</label>
+          <select id="user_type" name="user_type" required>
+            <option value="">Select your account type</option>
+            <option value="renter">Renter - I want to rent luxury villas</option>
+            <option value="owner">Owner - I want to list my luxury villa</option>
+          </select>
+        </div>
+        
+        <div class="role-info">
+          <h4>Account Types:</h4>
+          <p><strong>Renter:</strong> Browse and book luxury villas for your perfect getaway</p>
+          <p><strong>Owner:</strong> List your luxury property and earn premium rental income</p>
+        </div>
+        
+        <button type="submit" class="auth-btn">Create Account</button>
+      </form>
+      
+      <div class="auth-divider">
+        <span>Already have an account?</span>
+      </div>
+      
+      <p>Already have an account? <a href="login.html" class="auth-link">Sign In</a></p>
+    </div>
+  </div>
+
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>

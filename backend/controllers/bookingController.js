@@ -1,0 +1,201 @@
+const Booking = require('../models/Booking');
+const Property = require('../models/Property');
+
+exports.createBooking = async (req, res) => {
+  try {
+    const { property_id, move_in_date, total_amount } = req.body;
+
+    // Validate required fields
+    if (!property_id || !move_in_date || !total_amount) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const property = await Property.findById(property_id);
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    // Check if user is trying to book their own property
+    if (property.owner_id.toString() === req.user.id) {
+      return res.status(400).json({ message: 'Cannot book your own property' });
+    }
+
+    const newBooking = await Booking.create({
+      property_id,
+      renter_id: req.user.id,
+      owner_id: property.owner_id,
+      move_in_date,
+      total_amount
+    });
+
+    // Populate the booking with property and user details
+    const populatedBooking = await Booking.findById(newBooking._id)
+      .populate('property_id')
+      .populate('renter_id', 'name phone')
+      .populate('owner_id', 'name');
+
+    res.status(201).json({ 
+        message: 'Booking request sent', 
+        booking: populatedBooking 
+    });
+  } catch (error) {
+    console.error('Create booking error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getBookingsForOwner = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ owner_id: req.user.id })
+      .populate('property_id')
+      .populate('renter_id', 'name phone')
+      .sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (error) {
+    console.error('Get bookings for owner error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getBookingsForRenter = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ renter_id: req.user.id })
+      .populate({
+        path: 'property_id',
+        populate: {
+          path: 'owner_id',
+          select: 'name _id'
+        }
+      })
+      .populate('renter_id')
+      .sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (error) {
+    console.error('Get bookings for renter error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getBookingById = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id)
+      .populate('property_id')
+      .populate('renter_id', 'name phone')
+      .populate('owner_id', 'name');
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    // Check if user is authorized to view this booking
+    if (booking.renter_id._id.toString() !== req.user.id && 
+        booking.owner_id._id.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    res.json(booking);
+  } catch (error) {
+    console.error('Get booking by ID error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+  
+exports.updateBookingStatus = async (req, res) => {
+  try {
+    const { status } = req.body; // should be 'confirmed' or 'rejected'
+    
+    if (!['confirmed', 'rejected', 'cancelled'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+    
+    if (booking.owner_id.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to update this booking' });
+    }
+
+    // Update booking status
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true, runValidators: true }
+    ).populate('property_id')
+     .populate('renter_id', 'name phone')
+     .populate('owner_id', 'name');
+
+    // Send notifications for booking status changes
+    try {
+      const { notifyBookingConfirmed, notifyBookingRejected } = require('./notificationController');
+      
+      if (status === 'confirmed') {
+        await notifyBookingConfirmed(booking._id);
+      } else if (status === 'rejected') {
+        await notifyBookingRejected(booking._id);
+      }
+    } catch (notificationError) {
+      console.error('Error sending booking notification:', notificationError);
+      // Don't fail the booking update if notification fails
+    }
+
+    // If booking is confirmed, automatically create a payment record
+    if (status === 'confirmed') {
+      try {
+        const Payment = require('../models/Payment');
+        const User = require('../models/User');
+        
+        // Check if payment already exists
+        const existingPayment = await Payment.findOne({ booking_id: booking._id });
+        if (!existingPayment) {
+          // Generate QR code URL
+          const owner = await User.findById(booking.owner_id);
+          const qrData = {
+            upi_id: owner.phone + '@upi',
+            amount: booking.total_amount,
+            name: owner.name,
+            note: 'Rental Payment'
+          };
+          const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+          
+          await Payment.create({
+            booking_id: booking._id,
+            renter_id: booking.renter_id,
+            owner_id: booking.owner_id,
+            amount: booking.total_amount,
+            qr_code_url: qrCodeUrl
+          });
+        }
+      } catch (paymentError) {
+        console.error('Error creating payment:', paymentError);
+        // Don't fail the booking update if payment creation fails
+      }
+    }
+
+    res.json({ message: `Booking ${status}`, booking: updatedBooking });
+  } catch (error) {
+    console.error('Update booking status error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.deleteBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    // Only allow deletion if booking is pending or if user is the renter
+    if (booking.status !== 'pending' && booking.renter_id.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Cannot delete this booking' });
+    }
+
+    await Booking.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Booking deleted successfully' });
+  } catch (error) {
+    console.error('Delete booking error:', error);
+    res.status(500).json({ error: error.message });
+  }
+};

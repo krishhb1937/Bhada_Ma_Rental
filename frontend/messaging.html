@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages | Luxury Villa Rentals</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    .messaging-container {
+      min-height: 100vh;
+      background: #FAF3E0;
+      padding: 2rem 0;
+    }
+    
+    .messaging-header {
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+    
+    .messaging-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .messaging-subtitle {
+      text-align: center;
+      color: #E0C097;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+    
+    .chat-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(33, 33, 33, 0.1);
+      border: 1px solid rgba(224, 192, 151, 0.1);
+      overflow: hidden;
+    }
+    
+    .chat-header {
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(224, 192, 151, 0.2);
+    }
+    
+    .chat-header h2 {
+      margin: 0;
+      color: #212121;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .connection-status {
+      text-align: center;
+      padding: 0.8rem;
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .connection-status.connected {
+      background: rgba(212, 237, 218, 0.8);
+      color: #155724;
+      border-bottom: 1px solid rgba(195, 230, 203, 0.5);
+    }
+    
+    .connection-status.disconnected {
+      background: rgba(248, 215, 218, 0.8);
+      color: #721c24;
+      border-bottom: 1px solid rgba(245, 198, 203, 0.5);
+    }
+    
+    .connection-status::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .connection-status.connected::before {
+      background: #28a745;
+    }
+    
+    .connection-status.disconnected::before {
+      background: #dc3545;
+    }
+    
+    #chatBox {
+      height: 500px;
+      overflow-y: auto;
+      padding: 2rem;
+      background: #FFFFFF;
+      border: none;
+    }
+    
+    .message {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .message.sent {
+      flex-direction: row-reverse;
+    }
+    
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #212121;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    
+    .message-content {
+      max-width: 70%;
+      background: #FAF3E0;
+      padding: 1rem 1.5rem;
+      border-radius: 18px;
+      border: 1px solid rgba(224, 192, 151, 0.2);
+      position: relative;
+    }
+    
+    .message.sent .message-content {
+      background: linear-gradient(135deg, #FFD700 0%, #E0C097 100%);
+      color: #212121;
+    }
+    
+    .message-text {
+      margin: 0;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    
+    .message-time {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+    
+    .message.sent .message-time {
+      color: #212121;
+    }
+    
+    #msgForm {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      background: #FAF3E0;
+      border-top: 1px solid rgba(224, 192, 151, 0.2);
+    }
+    
+    #msgInput {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: 2px solid #E0C097;
+      border-radius: 25px;
+      outline: none;
+      font-size: 1rem;
+      background: #FFFFFF;
+      color: #212121;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    #msgInput:focus {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    }
+    
+    #msgForm button {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #212121 0%, #424242 100%);
+      color: #FAF3E0;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    #msgForm button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(33, 33, 33, 0.3);
+    }
+    
+    #msgForm button:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .back-button {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%);
+      color: #212121;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(224, 192, 151, 0.3);
+    }
+    
+    .loading-messages {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .no-messages {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+    }
+    
+    .no-messages h3 {
+      color: #212121;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    @media (max-width: 768px) {
+      .messaging-container {
+        padding: 1rem 0;
+      }
+      
+      .messaging-header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+      }
+      
+      .chat-container {
+        margin: 0 1rem;
+        border-radius: 12px;
+      }
+      
+      .chat-header {
+        padding: 1rem 1.5rem;
+      }
+      
+      #chatBox {
+        height: 400px;
+        padding: 1.5rem;
+      }
+      
+      #msgForm {
+        padding: 1rem 1.5rem;
+        gap: 0.8rem;
+      }
+      
+      .message-content {
+        max-width: 85%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .messaging-title {
+        font-size: 1.5rem;
+      }
+      
+      .chat-container {
+        margin: 0 0.5rem;
+      }
+      
+      .chat-header {
+        padding: 1rem;
+      }
+      
+      .chat-header h2 {
+        font-size: 1.3rem;
+      }
+      
+      #chatBox {
+        height: 350px;
+        padding: 1rem;
+      }
+      
+      #msgForm {
+        padding: 1rem;
+        flex-direction: column;
+      }
+      
+      #msgForm button {
+        width: 100%;
+      }
+      
+      .message-content {
+        max-width: 90%;
+        padding: 0.8rem 1.2rem;
+      }
+      
+      .back-button {
+        width: 100%;
+        text-align: center;
+        margin: 1rem 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="messaging-container">
+    <div class="messaging-header">
+      <div class="container">
+        <h1 class="messaging-title">Messages</h1>
+        <p class="messaging-subtitle">Connect with property owners and renters</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="chat-container">
+        <div class="chat-header">
+          <h2>Chat</h2>
+        </div>
+        
+        <div id="connectionStatus" class="connection-status connected" style="display: none;">
+          Connected
+        </div>
+
+        <div id="chatBox">
+          <div class="loading-messages">Loading messages...</div>
+        </div>
+
+        <form id="msgForm">
+          <input type="text" id="msgInput" placeholder="Type your message..." required>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="conversations.html" class="back-button">Back to Conversations</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/messages.js"></script>
+</body>
+</html>

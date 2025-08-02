@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Rentals | Premium Accommodations</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/premium-styles.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Your Perfect Property</h1>
+      <p class="hero-subtitle">Experience unparalleled elegance and comfort in our handpicked collection of premium properties</p>
+      
+      <!-- Search Form -->
+      <form id="searchForm" class="search-form">
+        <div class="search-grid">
+          <div class="search-field">
+            <input type="text" name="location" placeholder="Destination" required>
+          </div>
+          <div class="search-field">
+            <input type="number" name="minPrice" placeholder="Min Price">
+          </div>
+          <div class="search-field">
+            <input type="number" name="maxPrice" placeholder="Max Price">
+          </div>
+          <div class="search-field">
+            <select name="property_type">
+              <option value="">All Types</option>
+              <option value="villa">Villa</option>
+              <option value="mansion">Mansion</option>
+              <option value="penthouse">Penthouse</option>
+              <option value="beach-house">Beach House</option>
+            </select>
+          </div>
+          <button type="submit" class="search-btn">Search Properties</button>
+        </div>
+      </form>
+    </div>
+    <div class="hero-overlay"></div>
+  </section>
+
+  <!-- Featured Properties Section -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Featured Properties</h2>
+        <p class="section-subtitle">Curated selection of our most prestigious properties</p>
+      </div>
+      
+      <div id="propertyList" class="properties-grid">
+        <!-- Properties will be loaded here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Luxury Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose Our Properties</h2>
+        <p class="section-subtitle">Experience the epitome of premium living</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🏖️</div>
+          <h3>Prime Locations</h3>
+          <p>Exclusive properties in the most desirable destinations worldwide</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Premium Amenities</h3>
+          <p>World-class facilities and services for the ultimate comfort</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>24/7 Concierge</h3>
+          <p>Round-the-clock personalized service and support</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3>Verified Quality</h3>
+          <p>Every property meets our rigorous luxury standards</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Experience Premium Living?</h2>
+                  <p>Join thousands of satisfied guests who have discovered their perfect property</p>
+        <a href="register.html" class="cta-btn">Start Your Journey</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Luxury Villa Rentals</h3>
+          <p>Your gateway to extraordinary accommodations and unforgettable experiences.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="dashboard.html">Browse Villas</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: krishhb1937@gmail.com</p>
+          <p>Phone: +977 9847386708</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Bhada Ma. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>
