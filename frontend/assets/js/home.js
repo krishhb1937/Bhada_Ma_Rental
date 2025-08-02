@@ -15,7 +15,7 @@ function fetchProperties(query = '') {
   // Show loading state
   list.innerHTML = '<div class="loading">Discovering luxury properties...</div>';
   
-  fetch(`http://localhost:5000/api/properties?${query}`)
+  fetch(`https://bhada-ma-rental.onrender.com/api/properties?${query}`)
     .then(res => res.json())
     .then(data => {
       if (!data.length) {
@@ -41,7 +41,7 @@ function fetchProperties(query = '') {
 
 function createPropertyCard(property) {
   const imageUrl = property.photos && property.photos[0] 
-    ? `http://localhost:5000${property.photos[0]}` 
+    ? `https://bhada-ma-rental.onrender.com${property.photos[0]}` 
     : null;
   
   const statusClass = property.status === 'available' ? 'status-available' : 'status-occupied';

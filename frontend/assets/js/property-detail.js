@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
   
-    fetch(`http://localhost:5000/api/properties/${propertyId}`)
+    fetch(`https://bhada-ma-rental.onrender.com/api/properties/${propertyId}`)
       .then(res => res.json())
       .then(property => {
-        let images = property.photos.map(photo => `<img src="http://localhost:5000${photo}" height="300">`).join('');
+        let images = property.photos.map(photo => `<img src="https://bhada-ma-rental.onrender.com${photo}" height="300">`).join('');
         document.getElementById('propertyDetail').innerHTML = `
           <h2>${property.title}</h2>
           ${images}
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const total_amount = form.total_amount.value;
   
       try {
-        const res = await fetch('http://localhost:5000/api/bookings', {
+        const res = await fetch('https://bhada-ma-rental.onrender.com/api/bookings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

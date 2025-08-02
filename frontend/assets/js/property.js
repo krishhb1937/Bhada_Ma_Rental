@@ -6,7 +6,7 @@ document.getElementById('addPropertyForm').addEventListener('submit', async (e) 
     const token = localStorage.getItem('token');
   
     try {
-      const res = await fetch('http://localhost:5000/api/properties', {
+      const res = await fetch('https://bhada-ma-rental.onrender.com/api/properties', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`

@@ -29,7 +29,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production' 
-      ? [process.env.FRONTEND_URL || 'https://your-frontend-app.onrender.com']
+      ? [process.env.FRONTEND_URL || 'https://rental-management-backend.onrender.com']
       : [
           'http://localhost:5500',
           'http://127.0.0.1:5500',
@@ -50,7 +50,7 @@ const io = new Server(server, {
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL || 'https://your-frontend-app.onrender.com']
+    ? [process.env.FRONTEND_URL || 'https://rental-management-backend.onrender.com']
     : true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

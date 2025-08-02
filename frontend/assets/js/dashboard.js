@@ -12,7 +12,7 @@ if (user.user_type === 'owner') {
   document.getElementById('ownerSection').style.display = 'block';
 
   // Get owner properties
-  fetch('http://localhost:5000/api/properties', {
+  fetch('https://bhada-ma-rental.onrender.com/api/properties', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -21,7 +21,7 @@ if (user.user_type === 'owner') {
       document.getElementById('myProperties').innerHTML = myProps.map(p => `
         <div class="booking-card">
           <div class="booking-image">
-            ${p.photos[0] ? `<img src="http://localhost:5000${p.photos[0]}" alt="${p.title}">` : '<div class="no-image">No Image</div>'}
+            ${p.photos[0] ? `<img src="https://bhada-ma-rental.onrender.com${p.photos[0]}" alt="${p.title}">` : '<div class="no-image">No Image</div>'}
           </div>
           <div class="booking-content">
             <h4 class="booking-title">${p.title}</h4>
@@ -38,7 +38,7 @@ if (user.user_type === 'owner') {
     });
 
   // Get booking requests
-  fetch('http://localhost:5000/api/bookings/owner', {
+  fetch('https://bhada-ma-rental.onrender.com/api/bookings/owner', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -71,7 +71,7 @@ if (user.user_type === 'owner') {
     });
 
   // Load payment history for owners
-  fetch('http://localhost:5000/api/payments/user', {
+  fetch('https://bhada-ma-rental.onrender.com/api/payments/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -100,7 +100,7 @@ if (user.user_type === 'owner') {
   document.getElementById('renterSection').style.display = 'block';
 
   // Renter - View own bookings
-  fetch('http://localhost:5000/api/bookings/me', {
+  fetch('https://bhada-ma-rental.onrender.com/api/bookings/me', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -127,7 +127,7 @@ if (user.user_type === 'owner') {
     });
 
   // Load payment history
-  fetch('http://localhost:5000/api/payments/user', {
+  fetch('https://bhada-ma-rental.onrender.com/api/payments/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
@@ -159,7 +159,7 @@ if (user.user_type === 'owner') {
 
 // Update booking status (owner)
 function updateBooking(id, status) {
-    fetch(`http://localhost:5000/api/bookings/${id}`, {
+    fetch(`https://bhada-ma-rental.onrender.com/api/bookings/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ function deleteProperty(id) {
     const confirmDelete = confirm('Are you sure you want to delete this property?');
     if (!confirmDelete) return;
   
-    fetch(`http://localhost:5000/api/properties/${id}`, {
+    fetch(`https://bhada-ma-rental.onrender.com/api/properties/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })

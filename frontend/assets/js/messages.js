@@ -22,13 +22,13 @@
 //   const input = document.getElementById('msgInput');
 
 //   const roomId = `${propertyId}_${[user._id, otherUserId].sort().join('_')}`; // unique chatroom ID
-//   const socket = io('http://localhost:5000');
+//   const socket = io('https://bhada-ma-rental.onrender.com');
 
 //   // Join room
 //   socket.emit('joinRoom', { roomId });
 
 //   // Fetch previous messages
-//   fetch(`http://localhost:5000/api/messages/${propertyId}/${otherUserId}`, {
+//   fetch(`https://bhada-ma-rental.onrender.com/api/messages/${propertyId}/${otherUserId}`, {
 //     headers: { Authorization: `Bearer ${token}` }
 //   })
 //     .then(res => res.json())
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('msgInput');
 
   const roomId = `${propertyId}_${[user._id, otherUserId].sort().join('_')}`; // unique chatroom ID
-  const socket = io('http://localhost:5000', {
+  const socket = io('https://bhada-ma-rental.onrender.com', {
     transports: ['websocket', 'polling'],
     timeout: 20000,
     forceNew: true
@@ -131,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
   markMessagesAsRead();
 
   // Fetch previous messages
-  console.log('Fetching messages from:', `http://localhost:5000/api/messages/${propertyId}/${otherUserId}`);
+  console.log('Fetching messages from:', `https://bhada-ma-rental.onrender.com/api/messages/${propertyId}/${otherUserId}`);
   
-  fetch(`http://localhost:5000/api/messages/${propertyId}/${otherUserId}`, {
+  fetch(`https://bhada-ma-rental.onrender.com/api/messages/${propertyId}/${otherUserId}`, {
     headers: { 
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mark messages as read function
   function markMessagesAsRead() {
-    fetch(`http://localhost:5000/api/messages/read/${propertyId}/${otherUserId}`, {
+    fetch(`https://bhada-ma-rental.onrender.com/api/messages/read/${propertyId}/${otherUserId}`, {
       method: 'PUT',
       headers: { 
         'Authorization': `Bearer ${token}`,

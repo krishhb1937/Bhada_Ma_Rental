@@ -25,7 +25,7 @@ async function loadPaymentDetails(bookingId) {
 
   try {
     // First, try to get existing payment
-    const response = await fetch(`http://localhost:5000/api/payments/booking/${bookingId}`, {
+    const response = await fetch(`https://bhada-ma-rental.onrender.com/api/payments/booking/${bookingId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ async function createPayment(bookingId) {
   try {
     paymentContent.innerHTML = '<div class="loading">Creating payment...</div>';
 
-    const response = await fetch('http://localhost:5000/api/payments/create', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/payments/create', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -158,7 +158,7 @@ async function markAsPaid(paymentId) {
   const token = localStorage.getItem('token');
   
   try {
-    const response = await fetch(`http://localhost:5000/api/payments/${paymentId}/status`, {
+    const response = await fetch(`https://bhada-ma-rental.onrender.com/api/payments/${paymentId}/status`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,

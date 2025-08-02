@@ -16,7 +16,7 @@ async function loadNotifications() {
   const notificationsList = document.getElementById('notificationsList');
 
   try {
-    const response = await fetch('http://localhost:5000/api/notifications', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/notifications', {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ async function markAsRead(notificationId) {
   const token = localStorage.getItem('token');
   
   try {
-    const response = await fetch(`http://localhost:5000/api/notifications/${notificationId}/read`, {
+    const response = await fetch(`https://bhada-ma-rental.onrender.com/api/notifications/${notificationId}/read`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -100,7 +100,7 @@ async function markAllAsRead() {
   const token = localStorage.getItem('token');
   
   try {
-    const response = await fetch('http://localhost:5000/api/notifications/mark-all-read', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/notifications/mark-all-read', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -128,7 +128,7 @@ async function deleteNotification(notificationId) {
   }
   
   try {
-    const response = await fetch(`http://localhost:5000/api/notifications/${notificationId}`, {
+    const response = await fetch(`https://bhada-ma-rental.onrender.com/api/notifications/${notificationId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

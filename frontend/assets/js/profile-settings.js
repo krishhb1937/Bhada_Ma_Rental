@@ -22,7 +22,7 @@ async function loadUserProfile() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   try {
-    const response = await fetch(`http://localhost:5000/api/auth/profile`, {
+    const response = await fetch(`https://bhada-ma-rental.onrender.com/api/auth/profile`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ function showCurrentQrCode(qrCodePath) {
   const currentQrSection = document.getElementById('currentQrSection');
   const currentQrImage = document.getElementById('currentQrImage');
   
-  currentQrImage.src = `http://localhost:5000${qrCodePath}`;
+  currentQrImage.src = `https://bhada-ma-rental.onrender.com${qrCodePath}`;
   currentQrSection.style.display = 'block';
 }
 
@@ -127,7 +127,7 @@ document.getElementById('profileForm').addEventListener('submit', async (e) => {
   };
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/profile', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/auth/profile', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -176,7 +176,7 @@ document.getElementById('paymentForm').addEventListener('submit', async (e) => {
   }
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/payment-details', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/auth/payment-details', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -215,7 +215,7 @@ async function removeQrCode() {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/remove-qr-code', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/auth/remove-qr-code', {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
