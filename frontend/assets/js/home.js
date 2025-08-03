@@ -64,7 +64,7 @@ function createPropertyCard(property) {
           <span>${property.location}</span>
         </div>
         <div class="property-price">₹${property.price?.toLocaleString() || 'Contact for pricing'}</div>
-        <p class="property-description">${property.description || 'Experience luxury living at its finest with this exceptional property.'}</p>
+        <p class="property-description">${property.description || 'Experience living at its finest with this  property.'}</p>
         <div class="property-details">
           <span class="property-type">${property.property_type || 'Villa'}</span>
           <span class="property-status ${statusClass}">${statusText}</span>

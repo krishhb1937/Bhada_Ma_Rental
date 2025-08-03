@@ -55,8 +55,8 @@ if (user.user_type === 'owner') {
             </div>
             <div class="booking-actions">
               ${b.status === 'pending' ? `
-                <button onclick="updateBooking('${b._id}', 'confirmed')" class="btn btn-success">Confirm</button>
-                <button onclick="updateBooking('${b._id}', 'rejected')" class="btn btn-danger">Reject</button>
+                <button onclick="updateBooking('${b._id}', 'confirmed')" class="btn btn-success" data-booking-id="${b._id}">Confirm</button>
+                <button onclick="updateBooking('${b._id}', 'rejected')" class="btn btn-danger" data-booking-id="${b._id}">Reject</button>
               ` : ''}
               ${
                 b.owner_id && b.owner_id._id
@@ -159,23 +159,71 @@ if (user.user_type === 'owner') {
 
 // Update booking status (owner)
 function updateBooking(id, status) {
+    // Disable the buttons to prevent multiple clicks
+    const buttons = document.querySelectorAll(`[data-booking-id="${id}"] button`);
+    buttons.forEach(btn => btn.disabled = true);
+    
+    // Show loading state
+    const actionText = status === 'confirmed' ? 'Confirming...' : 'Rejecting...';
+    buttons.forEach(btn => {
+      if (btn.textContent.toLowerCase().includes(status)) {
+        btn.textContent = actionText;
+      }
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     fetch(`https://bhada-ma-rental.onrender.com/api/bookings/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status }),
+      signal: controller.signal
     })
-      .then(res => res.json())
-      .then(() => {
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(errorData => {
+            throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+          });
+        }
+        return res.json();
+      })
+      .then(data => {
+        clearTimeout(timeoutId);
+        // Show success message
+        const successMessage = status === 'confirmed' ? 'Booking confirmed successfully!' : 'Booking rejected successfully!';
+        alert(successMessage);
+        
         // Remove the card from DOM directly
         const card = document.querySelector(`[data-booking-id="${id}"]`);
         if (card) card.remove();
+        
+        // Reload the page to refresh the booking list
+        location.reload();
       })
       .catch(err => {
-        console.error(err);
-        alert('Failed to update booking');
+        clearTimeout(timeoutId);
+        console.error('Error updating booking:', err);
+        
+        let errorMessage = 'Failed to update booking. Please try again.';
+        if (err.name === 'AbortError') {
+          errorMessage = 'Request timed out. Please try again.';
+        } else if (err.message) {
+          errorMessage = `Failed to update booking: ${err.message}`;
+        }
+        
+        alert(errorMessage);
+        
+        // Re-enable buttons and restore text
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          if (btn.textContent.includes('Confirming') || btn.textContent.includes('Rejecting')) {
+            btn.textContent = btn.textContent.includes('Confirming') ? 'Confirm' : 'Reject';
+          }
+        });
       });
   }
 

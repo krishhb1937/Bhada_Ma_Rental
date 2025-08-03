@@ -104,8 +104,16 @@ exports.updateBookingStatus = async (req, res) => {
   try {
     const { status } = req.body; // should be 'confirmed' or 'rejected'
     
-    if (!['confirmed', 'rejected', 'cancelled'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status' });
+    if (!status) {
+      return res.status(400).json({ message: 'Status is required' });
+    }
+    
+    if (!['confirmed', 'rejected'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status. Must be "confirmed" or "rejected"' });
+    }
+
+    if (!req.params.id) {
+      return res.status(400).json({ message: 'Booking ID is required' });
     }
 
     const booking = await Booking.findById(req.params.id);
@@ -117,7 +125,18 @@ exports.updateBookingStatus = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to update this booking' });
     }
 
+    // Check if booking is already in a final state
+    if (booking.status !== 'pending') {
+      return res.status(400).json({ message: `Booking is already ${booking.status}. Cannot update from ${booking.status} to ${status}` });
+    }
+
+    // Validate that the booking has all required fields
+    if (!booking.property_id || !booking.renter_id || !booking.owner_id) {
+      return res.status(400).json({ message: 'Booking is missing required information' });
+    }
+
     // Update booking status
+    console.log(`Updating booking ${req.params.id} to status: ${status}`);
     const updatedBooking = await Booking.findByIdAndUpdate(
       req.params.id,
       { status },
@@ -126,14 +145,20 @@ exports.updateBookingStatus = async (req, res) => {
      .populate('renter_id', 'name phone')
      .populate('owner_id', 'name');
 
+    if (!updatedBooking) {
+      throw new Error('Failed to update booking');
+    }
+
+    console.log(`Booking ${req.params.id} updated successfully to ${status}`);
+
     // Send notifications for booking status changes
     try {
-      const { notifyBookingConfirmed, notifyBookingRejected } = require('./notificationController');
+      const notificationController = require('./notificationController');
       
       if (status === 'confirmed') {
-        await notifyBookingConfirmed(booking._id);
+        await notificationController.notifyBookingConfirmed(booking._id);
       } else if (status === 'rejected') {
-        await notifyBookingRejected(booking._id);
+        await notificationController.notifyBookingRejected(booking._id);
       }
     } catch (notificationError) {
       console.error('Error sending booking notification:', notificationError);
@@ -151,6 +176,11 @@ exports.updateBookingStatus = async (req, res) => {
         if (!existingPayment) {
           // Generate QR code URL
           const owner = await User.findById(booking.owner_id);
+          if (!owner) {
+            console.error('Owner not found for payment creation');
+            return res.status(500).json({ error: 'Owner information not found' });
+          }
+          
           const qrData = {
             upi_id: owner.phone + '@upi',
             amount: booking.total_amount,
@@ -173,6 +203,7 @@ exports.updateBookingStatus = async (req, res) => {
       }
     }
 
+    console.log(`Booking ${req.params.id} ${status} successfully`);
     res.json({ message: `Booking ${status}`, booking: updatedBooking });
   } catch (error) {
     console.error('Update booking status error:', error);
