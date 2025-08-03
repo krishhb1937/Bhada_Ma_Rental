@@ -29,7 +29,11 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production' 
-      ? [process.env.FRONTEND_URL || 'https://rental-management-backend.onrender.com']
+      ? [
+          process.env.FRONTEND_URL || 'https://bhada-ma-rental-frontend.onrender.com',
+          'https://bhada-ma-rental.onrender.com',
+          'https://rental-management-backend.onrender.com'
+        ]
       : [
           'http://localhost:5500',
           'http://127.0.0.1:5500',
@@ -43,24 +47,38 @@ const io = new Server(server, {
           'http://127.0.0.1:4000'
         ], 
     credentials: true,
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
   }
 });
 
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL || 'https://rental-management-backend.onrender.com']
+    ? [
+        process.env.FRONTEND_URL || 'https://bhada-ma-rental-frontend.onrender.com',
+        'https://bhada-ma-rental.onrender.com',
+        'https://rental-management-backend.onrender.com'
+      ]
     : true,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/uploads/qr-codes', express.static('uploads/qr-codes'));
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));

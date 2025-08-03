@@ -198,18 +198,27 @@ if (user.user_type === 'owner') {
 }
 
 // Update booking status (owner)
-function updateBooking(id, status) {
+function updateBooking(id, status, retryCount = 0) {
+    const maxRetries = 2;
+    
     // Disable the buttons to prevent multiple clicks
     const buttons = document.querySelectorAll(`[data-booking-id="${id}"] button`);
     buttons.forEach(btn => btn.disabled = true);
     
     // Show loading state
     const actionText = status === 'confirmed' ? 'Confirming...' : 'Rejecting...';
+    if (retryCount > 0) {
+      actionText += ` (Retry ${retryCount})`;
+    }
     buttons.forEach(btn => {
       if (btn.textContent.toLowerCase().includes(status)) {
         btn.textContent = actionText;
       }
     });
+
+    console.log(`Attempting to update booking ${id} to status: ${status} (attempt ${retryCount + 1})`);
+    console.log('Request URL:', `https://bhada-ma-rental.onrender.com/api/bookings/${id}`);
+    console.log('Request payload:', { status });
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
@@ -218,10 +227,13 @@ function updateBooking(id, status) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'Accept': 'application/json'
       },
       body: JSON.stringify({ status }),
-      signal: controller.signal
+      signal: controller.signal,
+      mode: 'cors',
+      credentials: 'omit'
     })
       .then(res => {
         if (!res.ok) {
@@ -248,12 +260,30 @@ function updateBooking(id, status) {
         clearTimeout(timeoutId);
         console.error('Error updating booking:', err);
         
+        // Retry logic for network errors
+        if (retryCount < maxRetries && (err.name === 'TypeError' || err.name === 'AbortError')) {
+          console.log(`Retrying... (${retryCount + 1}/${maxRetries})`);
+          setTimeout(() => {
+            updateBooking(id, status, retryCount + 1);
+          }, 2000); // Wait 2 seconds before retry
+          return;
+        }
+        
         let errorMessage = 'Failed to update booking. Please try again.';
+        
         if (err.name === 'AbortError') {
           errorMessage = 'Request timed out. Please try again.';
+        } else if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+          errorMessage = 'Network error: Unable to connect to server. Please check your internet connection and try again.';
         } else if (err.message) {
           errorMessage = `Failed to update booking: ${err.message}`;
         }
+        
+        console.error('Full error details:', {
+          name: err.name,
+          message: err.message,
+          stack: err.stack
+        });
         
         alert(errorMessage);
         
@@ -310,4 +340,37 @@ function deleteProperty(id) {
 function goToPayment(bookingId) {
   window.location.href = `payment.html?booking_id=${bookingId}`;
 }
+
+// Test backend connectivity
+async function testBackendConnectivity() {
+  try {
+    console.log('Testing backend connectivity...');
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/health', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Backend is reachable:', data);
+      return true;
+    } else {
+      console.log('Backend responded with status:', response.status);
+      return false;
+    }
+  } catch (error) {
+    console.error('Backend connectivity test failed:', error);
+    return false;
+  }
+}
+
+// Add connectivity test to the page
+document.addEventListener('DOMContentLoaded', () => {
+  // Test connectivity after a short delay
+  setTimeout(() => {
+    testBackendConnectivity();
+  }, 1000);
+});
   

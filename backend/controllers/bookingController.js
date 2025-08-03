@@ -102,17 +102,26 @@ exports.getBookingById = async (req, res) => {
   
 exports.updateBookingStatus = async (req, res) => {
   try {
+    console.log('=== Update Booking Status Request ===');
+    console.log('User ID:', req.user.id);
+    console.log('Booking ID:', req.params.id);
+    console.log('Request body:', req.body);
+    console.log('Request headers:', req.headers);
+    
     const { status } = req.body; // should be 'confirmed' or 'rejected'
     
     if (!status) {
+      console.log('Error: Status is required');
       return res.status(400).json({ message: 'Status is required' });
     }
     
     if (!['confirmed', 'rejected'].includes(status)) {
+      console.log('Error: Invalid status:', status);
       return res.status(400).json({ message: 'Invalid status. Must be "confirmed" or "rejected"' });
     }
 
     if (!req.params.id) {
+      console.log('Error: Booking ID is required');
       return res.status(400).json({ message: 'Booking ID is required' });
     }
 
@@ -215,9 +224,12 @@ exports.updateBookingStatus = async (req, res) => {
     }
 
     console.log(`Booking ${req.params.id} ${status} successfully`);
+    console.log('=== Update Booking Status Response ===');
+    console.log('Response:', { message: `Booking ${status}`, booking: updatedBooking });
     res.json({ message: `Booking ${status}`, booking: updatedBooking });
   } catch (error) {
     console.error('Update booking status error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({ error: error.message });
   }
 };
