@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const conversationsContainer = document.getElementById('conversationsContainer');
 
   // Fetch conversations
-  fetch('http://localhost:5000/api/messages/conversations', {
+  fetch('https://bhada-ma-rental.onrender.com/api/messages/conversations', {
     headers: { 
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'

@@ -26,11 +26,11 @@ exports.createProperty = async (req, res) => {
     console.log('✅ All required fields present');
 
     // Validate property_type
-    const validPropertyTypes = ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment'];
+    const validPropertyTypes = ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment', 'luxury-apartment'];
     if (!validPropertyTypes.includes(property_type)) {
       console.log('❌ Invalid property type:', property_type);
       return res.status(400).json({ 
-        error: 'Invalid property_type. Must be one of: villa, mansion, penthouse, beach-house, apartment' 
+        error: 'Invalid property_type. Must be one of: villa, mansion, penthouse, beach-house, apartment, luxury-apartment' 
       });
     }
 

@@ -31,8 +31,8 @@ const propertySchema = new mongoose.Schema({
   property_type: { 
     type: String, 
     enum: {
-      values: ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment'],
-      message: 'Property type must be villa, mansion, penthouse, beach-house, or apartment'
+      values: ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment', 'luxury-apartment'],
+      message: 'Property type must be villa, mansion, penthouse, beach-house, apartment, or luxury-apartment'
     },
     required: [true, 'Property type is required']
   },

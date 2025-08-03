@@ -238,8 +238,15 @@
       }
       
       .submit-btn,
-      .back-btn {
+      .back-btn,
+      .reset-btn {
         width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+        gap: 0.5rem;
       }
     }
   </style>
@@ -283,13 +290,13 @@
               <option value="mansion">Mansion</option>
               <option value="penthouse">Penthouse</option>
               <option value="beach-house">Beach House</option>
-              <option value="apartment">Luxury Apartment</option>
+              <option value="luxury-apartment">Luxury Apartment</option>
             </select>
           </div>
           
           <div class="form-group">
             <label for="price">Monthly Rent (Rs.)</label>
-            <input type="number" id="price" name="price" placeholder="Enter monthly rent amount" required>
+            <input type="number" id="price" name="price" placeholder="Enter monthly rent amount" min="1" step="0.01" required>
           </div>
           
           <div class="form-group">
@@ -299,12 +306,12 @@
           
           <div class="form-group">
             <label for="bedrooms">Number of Bedrooms</label>
-            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter number of bedrooms">
+            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter number of bedrooms" min="0" max="20">
           </div>
           
           <div class="form-group">
             <label for="bathrooms">Number of Bathrooms</label>
-            <input type="number" id="bathrooms" name="bathrooms" placeholder="Enter number of bathrooms">
+            <input type="number" id="bathrooms" name="bathrooms" placeholder="Enter number of bathrooms" min="0" max="20">
           </div>
         </div>
         
@@ -316,17 +323,19 @@
         <div class="form-group full-width">
           <label for="photos">Property Photos</label>
           <div class="file-upload">
-            <input type="file" id="photos" name="photos" multiple accept="image/*">
+            <input type="file" id="photos" name="photos" multiple accept="image/*" onchange="validateFiles(this)">
             <label for="photos" class="file-upload-label">
               📸 Click to upload photos or drag and drop<br>
-              <small>Upload multiple high-quality images (JPG, PNG)</small>
+              <small>Upload multiple high-quality images (JPG, PNG) - Max 5MB per file</small>
             </label>
           </div>
+          <div id="fileValidation" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
         </div>
         
         <div class="form-actions">
           <button type="submit" class="submit-btn">Add Property</button>
-          <button type="button" onclick=" location.href='dashboard.html' " class="back-btn">Back to Dashboard</button>
+          <button type="button" onclick="location.href='dashboard.html'" class="back-btn">Back to Dashboard</button>
+          <button type="button" onclick="confirmReset()" class="reset-btn" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;">Reset Form</button>
         </div>
       </form>
     </div>

@@ -6,7 +6,7 @@ const user = JSON.parse(localStorage.getItem('user'));
 let unreadCount = 0;
 if (token && user) {
   try {
-    const response = await fetch('http://localhost:5000/api/notifications/unread/count', {
+    const response = await fetch('https://bhada-ma-rental.onrender.com/api/notifications/unread/count', {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -61,7 +61,3 @@ if (navbarDiv) {
   console.warn("Navbar div not found!");
 }
 });
-function logout() {
-  localStorage.clear();
-  window.location.href = 'index.html';
-}

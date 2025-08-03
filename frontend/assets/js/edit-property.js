@@ -11,7 +11,7 @@ if (!propertyId) {
 }
 
 // Load property data to pre-fill
-fetch(`http://localhost:5000/api/properties/${propertyId}`)
+fetch(`https://bhada-ma-rental.onrender.com/api/properties/${propertyId}`)
   .then(res => {
     if (!res.ok) {
       throw new Error('Failed to load property');
@@ -50,7 +50,7 @@ form.addEventListener('submit', async (e) => {
   const updatedData = Object.fromEntries(formData.entries());
 
   try {
-    const res = await fetch(`http://localhost:5000/api/properties/${propertyId}`, {
+    const res = await fetch(`https://bhada-ma-rental.onrender.com/api/properties/${propertyId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
