@@ -180,10 +180,10 @@ exports.updateProperty = async (req, res) => {
 
     // Validate property_type if provided
     if (req.body.property_type) {
-      const validPropertyTypes = ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment'];
+      const validPropertyTypes = ['villa', 'mansion', 'penthouse', 'beach-house', 'apartment', 'luxury-apartment'];
       if (!validPropertyTypes.includes(req.body.property_type)) {
         return res.status(400).json({ 
-          error: 'Invalid property_type. Must be one of: villa, mansion, penthouse, beach-house, apartment' 
+          error: 'Invalid property_type. Must be one of: villa, mansion, penthouse, beach-house, apartment, luxury-apartment' 
         });
       }
     }

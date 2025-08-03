@@ -51,11 +51,14 @@ function createPropertyCard(property) {
     <div class="property-card">
       <div class="property-image">
         ${imageUrl 
-          ? `<img src="${imageUrl}" alt="${property.title}" style="width: 100%; height: 100%; object-fit: cover;">` 
-          : `<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); color: #212121; font-size: 1.2rem; font-weight: 500;">
-              ${property.property_type || 'Bhada Ma'}
+          ? `<img src="${imageUrl}" alt="${property.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px 12px 0 0;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">` 
+          : `<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); color: #212121; font-size: 1.2rem; font-weight: 500; border-radius: 12px 12px 0 0;">
+              📸 ${property.property_type || 'Bhada Ma'}
             </div>`
         }
+        ${imageUrl ? `<div style="display: none; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); color: #212121; font-size: 1.2rem; font-weight: 500; border-radius: 12px 12px 0 0;">
+          📸 ${property.property_type || 'Bhada Ma'}
+        </div>` : ''}
       </div>
       <div class="property-content">
         <h3 class="property-title">${property.title}</h3>

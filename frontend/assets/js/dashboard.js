@@ -26,7 +26,8 @@ if (user.user_type === 'owner') {
       document.getElementById('myProperties').innerHTML = myProps.map(p => `
         <div class="booking-card">
           <div class="booking-image">
-            ${p.photos[0] ? `<img src="https://bhada-ma-rental.onrender.com${p.photos[0]}" alt="${p.title}">` : '<div class="no-image">No Image</div>'}
+            ${p.photos && p.photos[0] ? `<img src="https://bhada-ma-rental.onrender.com${p.photos[0]}" alt="${p.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">` : '<div class="no-image" style="width: 100%; height: 200px; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #212121; font-weight: 500;">📸 No Image</div>'}
+            ${p.photos && p.photos[0] ? '<div class="no-image" style="width: 100%; height: 200px; background: linear-gradient(135deg, #E0C097 0%, #FFD700 100%); display: none; align-items: center; justify-content: center; border-radius: 8px; color: #212121; font-weight: 500;">📸 Image Error</div>' : ''}
           </div>
           <div class="booking-content">
             <h4 class="booking-title">${p.title}</h4>
