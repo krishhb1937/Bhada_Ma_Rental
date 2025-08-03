@@ -249,19 +249,26 @@ async function generateQRCode(ownerId, amount) {
     
     // If owner has uploaded their own QR code, use it
     if (owner.qr_code) {
-      return `http://localhost:5000${owner.qr_code}`;
+      return `https://bhada-ma-rental.onrender.com${owner.qr_code}`;
     }
     
     // Otherwise, generate a placeholder QR code with UPI data
-    const qrData = {
-      upi_id: owner.upi_id || owner.phone + '@upi',
-      amount: amount,
-      name: owner.name,
-      note: 'Rental Payment'
-    };
+    const upiId = owner.upi_id || (owner.phone ? owner.phone + '@upi' : null);
     
-    // Return a placeholder QR code URL
-    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+    if (upiId) {
+      const qrData = {
+        upi_id: upiId,
+        amount: amount,
+        name: owner.name,
+        note: 'Rental Payment'
+      };
+      
+      // Return a placeholder QR code URL
+      return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+    } else {
+      // If no UPI ID is available, return a generic QR code
+      return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('Contact owner for payment details')}`;
+    }
   } catch (error) {
     console.error('Error generating QR code:', error);
     // Return a fallback QR code URL

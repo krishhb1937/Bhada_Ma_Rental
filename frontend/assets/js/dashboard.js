@@ -15,7 +15,12 @@ if (user.user_type === 'owner') {
   fetch('https://bhada-ma-rental.onrender.com/api/properties', {
     headers: { Authorization: `Bearer ${token}` }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
     .then(data => {
       const myProps = data.filter(p => p.owner_id._id === user._id || p.owner_id === user._id);
       document.getElementById('myProperties').innerHTML = myProps.map(p => `
@@ -34,14 +39,23 @@ if (user.user_type === 'owner') {
             </div>
           </div>
         </div>
-      `).join('');
+      `).join('') || '<div class="empty-state"><h4>No Properties</h4><p>You haven\'t added any properties yet.</p><a href="add-property.html" class="empty-state-btn">Add Property</a></div>';
+    })
+    .catch(err => {
+      console.error('Error loading properties:', err);
+      document.getElementById('myProperties').innerHTML = '<div class="empty-state"><h4>Error</h4><p>Failed to load properties. Please refresh the page.</p></div>';
     });
 
   // Get booking requests
   fetch('https://bhada-ma-rental.onrender.com/api/bookings/owner', {
     headers: { Authorization: `Bearer ${token}` }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
     .then(data => {
       const bookingsHtml = data.map(b => `
         <div class="booking-card" data-booking-id="${b._id}">
@@ -59,7 +73,7 @@ if (user.user_type === 'owner') {
                 <button onclick="updateBooking('${b._id}', 'rejected')" class="btn btn-danger" data-booking-id="${b._id}">Reject</button>
               ` : ''}
               ${
-                b.owner_id && b.owner_id._id
+                b.property_id && b.renter_id
                   ? `<a href="messaging.html?id=${b.property_id._id}&user=${b.renter_id._id}" class="btn btn-chat">💬 Chat with Renter</a>`
                   : ''
               }
@@ -67,14 +81,23 @@ if (user.user_type === 'owner') {
           </div>
         </div>
       `).join('');
-      document.getElementById('bookingRequests').innerHTML = bookingsHtml;
+      document.getElementById('bookingRequests').innerHTML = bookingsHtml || '<div class="empty-state"><h4>No Booking Requests</h4><p>No pending booking requests at the moment.</p></div>';
+    })
+    .catch(err => {
+      console.error('Error loading booking requests:', err);
+      document.getElementById('bookingRequests').innerHTML = '<div class="empty-state"><h4>Error</h4><p>Failed to load booking requests. Please refresh the page.</p></div>';
     });
 
   // Load payment history for owners
   fetch('https://bhada-ma-rental.onrender.com/api/payments/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
     .then(data => {
       const paymentHtml = data.map(payment => `
         <div class="booking-card">
@@ -103,7 +126,12 @@ if (user.user_type === 'owner') {
   fetch('https://bhada-ma-rental.onrender.com/api/bookings/me', {
     headers: { Authorization: `Bearer ${token}` }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
     .then(data => {
       const html = data.map(b => `
         <div class="booking-card">
@@ -115,7 +143,10 @@ if (user.user_type === 'owner') {
               <p><strong>Amount:</strong> ₹${b.total_amount?.toLocaleString() || 'N/A'}</p>
             </div>
             <div class="booking-actions">
-              <a href="messaging.html?id=${b.property_id._id}&user=${b.property_id.owner_id._id}" class="btn btn-chat">💬 Chat with Owner</a>
+              ${b.property_id && b.property_id.owner_id ? 
+                `<a href="messaging.html?id=${b.property_id._id}&user=${b.property_id.owner_id._id}" class="btn btn-chat">💬 Chat with Owner</a>` 
+                : ''
+              }
               ${b.status === 'confirmed' ? `
                 <button onclick="goToPayment('${b._id}')" class="btn btn-pay">💳 Pay Now</button>
               ` : ''}
@@ -124,13 +155,22 @@ if (user.user_type === 'owner') {
         </div>
       `).join('');
       document.getElementById('myBookings').innerHTML = html || '<div class="empty-state"><h4>No Bookings</h4><p>You haven\'t made any bookings yet.</p><a href="index.html" class="empty-state-btn">Browse Properties</a></div>';
+    })
+    .catch(err => {
+      console.error('Error loading bookings:', err);
+      document.getElementById('myBookings').innerHTML = '<div class="empty-state"><h4>Error</h4><p>Failed to load bookings. Please refresh the page.</p></div>';
     });
 
   // Load payment history
   fetch('https://bhada-ma-rental.onrender.com/api/payments/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
     .then(data => {
       const paymentHtml = data.map(payment => `
         <div class="booking-card">
@@ -142,7 +182,7 @@ if (user.user_type === 'owner') {
               <p><strong>Date:</strong> ${new Date(payment.payment_date).toLocaleDateString()}</p>
             </div>
             <div class="booking-actions">
-              ${payment.status === 'pending' ? `
+              ${payment.status === 'pending' && payment.booking_id ? `
                 <button onclick="goToPayment('${payment.booking_id._id}')" class="btn btn-pay">💳 Pay Now</button>
               ` : ''}
             </div>
@@ -228,21 +268,38 @@ function updateBooking(id, status) {
   }
 
 function deleteProperty(id) {
-    const confirmDelete = confirm('Are you sure you want to delete this property?');
+    const confirmDelete = confirm('Are you sure you want to delete this property? This action cannot be undone.');
     if (!confirmDelete) return;
   
+    // Disable the delete button to prevent multiple clicks
+    const deleteBtn = event.target;
+    const originalText = deleteBtn.textContent;
+    deleteBtn.disabled = true;
+    deleteBtn.textContent = 'Deleting...';
+
     fetch(`https://bhada-ma-rental.onrender.com/api/properties/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(errorData => {
+            throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+          });
+        }
+        return res.json();
+      })
       .then(data => {
-        alert('Property deleted');
+        alert('Property deleted successfully!');
         location.reload();
       })
       .catch(err => {
-        console.error(err);
-        alert('Delete failed');
+        console.error('Error deleting property:', err);
+        alert(`Delete failed: ${err.message}`);
+        
+        // Re-enable the button
+        deleteBtn.disabled = false;
+        deleteBtn.textContent = originalText;
       });
   }
   

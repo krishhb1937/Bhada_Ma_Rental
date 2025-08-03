@@ -24,6 +24,9 @@ async function loadPaymentDetails(bookingId) {
   const paymentContent = document.getElementById('paymentContent');
 
   try {
+    // Show loading state
+    paymentContent.innerHTML = '<div class="loading">Loading payment details...</div>';
+
     // First, try to get existing payment
     const response = await fetch(`https://bhada-ma-rental.onrender.com/api/payments/booking/${bookingId}`, {
       headers: {
@@ -39,11 +42,12 @@ async function loadPaymentDetails(bookingId) {
       // Payment doesn't exist, create one
       await createPayment(bookingId);
     } else {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
   } catch (error) {
     console.error('Error loading payment details:', error);
-    showError('Failed to load payment details. Please try again.');
+    showError(`Failed to load payment details: ${error.message}`);
   }
 }
 
@@ -67,12 +71,12 @@ async function createPayment(bookingId) {
       const result = await response.json();
       renderPaymentDetails(result.payment);
     } else {
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to create payment');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to create payment');
     }
   } catch (error) {
     console.error('Error creating payment:', error);
-    showError(error.message || 'Failed to create payment. Please try again.');
+    showError(`Failed to create payment: ${error.message}`);
   }
 }
 
@@ -157,6 +161,12 @@ function renderPaymentDetails(payment) {
 async function markAsPaid(paymentId) {
   const token = localStorage.getItem('token');
   
+  // Disable the button to prevent multiple clicks
+  const markAsPaidBtn = event.target;
+  const originalText = markAsPaidBtn.textContent;
+  markAsPaidBtn.disabled = true;
+  markAsPaidBtn.textContent = 'Updating...';
+  
   try {
     const response = await fetch(`https://bhada-ma-rental.onrender.com/api/payments/${paymentId}/status`, {
       method: 'PUT',
@@ -176,12 +186,16 @@ async function markAsPaid(paymentId) {
       // Reload the page to show updated status
       window.location.reload();
     } else {
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to update payment status');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to update payment status');
     }
   } catch (error) {
     console.error('Error marking payment as paid:', error);
-    alert(error.message || 'Failed to mark payment as paid. Please try again.');
+    alert(`Failed to mark payment as paid: ${error.message}`);
+    
+    // Re-enable the button
+    markAsPaidBtn.disabled = false;
+    markAsPaidBtn.textContent = originalText;
   }
 }
 

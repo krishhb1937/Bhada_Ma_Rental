@@ -178,24 +178,35 @@ exports.updateBookingStatus = async (req, res) => {
           const owner = await User.findById(booking.owner_id);
           if (!owner) {
             console.error('Owner not found for payment creation');
-            return res.status(500).json({ error: 'Owner information not found' });
+            // Don't fail the booking update if owner info is missing
+          } else {
+            // Use owner's UPI ID if available, otherwise use phone number
+            const upiId = owner.upi_id || (owner.phone ? owner.phone + '@upi' : null);
+            
+            if (upiId) {
+              const qrData = {
+                upi_id: upiId,
+                amount: booking.total_amount,
+                name: owner.name,
+                note: 'Rental Payment'
+              };
+              const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+              
+              await Payment.create({
+                booking_id: booking._id,
+                renter_id: booking.renter_id,
+                owner_id: booking.owner_id,
+                amount: booking.total_amount,
+                qr_code_url: qrCodeUrl
+              });
+              
+              console.log(`Payment record created for booking ${booking._id}`);
+            } else {
+              console.log(`No UPI ID available for owner ${owner._id}, payment record not created`);
+            }
           }
-          
-          const qrData = {
-            upi_id: owner.phone + '@upi',
-            amount: booking.total_amount,
-            name: owner.name,
-            note: 'Rental Payment'
-          };
-          const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify(qrData))}`;
-          
-          await Payment.create({
-            booking_id: booking._id,
-            renter_id: booking.renter_id,
-            owner_id: booking.owner_id,
-            amount: booking.total_amount,
-            qr_code_url: qrCodeUrl
-          });
+        } else {
+          console.log(`Payment record already exists for booking ${booking._id}`);
         }
       } catch (paymentError) {
         console.error('Error creating payment:', paymentError);
